@@ -17,7 +17,7 @@ prompt_geometry_check_command_exec_time() {
   # Check if elapsed time is above the configured threshold
   (( elapsed = EPOCHSECONDS - ${prompt_geometry_command_timestamp:-$EPOCHSECONDS} ))
   if (( elapsed > $PROMPT_GEOMETRY_COMMAND_MAX_EXEC_TIME )); then
-    prompt_geometry_command_exec_time="$(prompt_geometry_seconds_to_human_time $elapsed)"
+    prompt_geometry_command_exec_time="%{$bg[yellow]%} $(prompt_geometry_seconds_to_human_time $elapsed) %{$reset_color%}"
   fi
 
   # Clear timestamp after we're done calculating exec_time

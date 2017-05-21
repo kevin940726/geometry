@@ -1,10 +1,10 @@
 # Define default separator for plugins' output
-typeset -g GEOMETRY_PLUGIN_SEPARATOR=${GEOMETRY_PLUGIN_SEPARATOR:-" "}
+typeset -g GEOMETRY_PLUGIN_SEPARATOR=${GEOMETRY_PLUGIN_SEPARATOR:-""}
 
 # Define default plugins
 typeset -ga GEOMETRY_PROMPT_PLUGINS
 if [[ $#GEOMETRY_PROMPT_PLUGINS -eq 0 ]]; then
-  GEOMETRY_PROMPT_PLUGINS=(exec_time jobs git hg)
+  GEOMETRY_PROMPT_PLUGINS=(exec_time jobs git)
 fi
 
 # List of active plugins
