@@ -181,7 +181,7 @@ geometry_prompt_git_render() {
   local render="%{$bg[$GEOMETRY_COLOR_GIT_BRANCH_BG]%} $(prompt_geometry_git_symbol)"
 
   if [[ -n $render ]]; then
-    render+=" "
+    render+=""
   fi
 
   render+="$(prompt_geometry_git_branch) $(prompt_geometry_git_status)%{$reset_color%} ${conflicts}${GEOMETRY_GIT_SEPARATOR}${time}"
