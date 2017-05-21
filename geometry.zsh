@@ -11,15 +11,16 @@ source "$GEOMETRY_ROOT/lib/grep.zsh"
 
 # Color definitions
 GEOMETRY_COLOR_EXIT_VALUE=${GEOMETRY_COLOR_EXIT_VALUE:-magenta}
-GEOMETRY_COLOR_PROMPT=${GEOMETRY_COLOR_PROMPT:-white}
+GEOMETRY_COLOR_PROMPT=${GEOMETRY_COLOR_PROMPT:-black}
 GEOMETRY_COLOR_ROOT=${GEOMETRY_COLOR_ROOT:-red}
-GEOMETRY_COLOR_DIR=${GEOMETRY_COLOR_DIR:-blue}
+GEOMETRY_COLOR_DIR=${GEOMETRY_COLOR_DIR:-black}
+GEOMETRY_COLOR_DIR_BG=${GEOMETRY_COLOR_DIR_BG:-blue}
 
 # Symbol definitions
-GEOMETRY_SYMBOL_PROMPT=${GEOMETRY_SYMBOL_PROMPT:-"▲"}
+GEOMETRY_SYMBOL_PROMPT=${GEOMETRY_SYMBOL_PROMPT:-"♦"}
 GEOMETRY_SYMBOL_RPROMPT=${GEOMETRY_SYMBOL_RPROMPT:-"◇"}
-GEOMETRY_SYMBOL_EXIT_VALUE=${GEOMETRY_SYMBOL_EXIT_VALUE:-"△"}
-GEOMETRY_SYMBOL_ROOT=${GEOMETRY_SYMBOL_ROOT:-"▲"}
+GEOMETRY_SYMBOL_EXIT_VALUE=${GEOMETRY_SYMBOL_EXIT_VALUE:-"◇"}
+GEOMETRY_SYMBOL_ROOT=${GEOMETRY_SYMBOL_ROOT:-"♦"}
 
 # Combine color and symbols
 GEOMETRY_EXIT_VALUE=$(prompt_geometry_colorize $GEOMETRY_COLOR_EXIT_VALUE $GEOMETRY_SYMBOL_EXIT_VALUE)
@@ -59,7 +60,7 @@ prompt_geometry_render_rprompt() {
 }
 
 prompt_geometry_render_lprompt() {
-  echo "$GEOMETRY_PROMPT_PREFIX %${#PROMPT_SYMBOL}{%(?.$GEOMETRY_PROMPT.$GEOMETRY_EXIT_VALUE)%} %F{$GEOMETRY_COLOR_DIR}%3~%f $GEOMETRY_PROMPT_SUFFIX"
+  echo "%{$bg[$GEOMETRY_COLOR_DIR_BG]%}%{$fg[black]%}$GEOMETRY_PROMPT_PREFIX %${#PROMPT_SYMBOL}{%(?.$GEOMETRY_PROMPT.$GEOMETRY_EXIT_VALUE)%} %F{$GEOMETRY_COLOR_DIR}%3~%f %F{$GEOMETRY_COLOR_DIR}↴ $GEOMETRY_PROMPT_SUFFIX\n%{$reset_color%} $ %{$reset_color%}"
 }
 
 prompt_geometry_render() {
@@ -80,7 +81,7 @@ prompt_geometry_render() {
         RPROMPT=""
     else
         setopt localoptions no_prompt_subst
-        RPROMPT="$(prompt_geometry_render_rprompt)"
+        RPROMPT="$(prompt_geometry_render_rprompt)%{$reset_color%}"
     fi
   fi
 }

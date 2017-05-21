@@ -1,20 +1,21 @@
 # Color definitions
-GEOMETRY_COLOR_GIT_DIRTY=${GEOMETRY_COLOR_GIT_DIRTY:-red}
-GEOMETRY_COLOR_GIT_CLEAN=${GEOMETRY_COLOR_GIT_CLEAN:-green}
-GEOMETRY_COLOR_GIT_BARE=${GEOMETRY_COLOR_GIT_BARE:-blue}
-GEOMETRY_COLOR_GIT_CONFLICTS_UNSOLVED=${GEOMETRY_COLOR_GIT_CONFLICTS_UNSOLVED:-red}
-GEOMETRY_COLOR_GIT_CONFLICTS_SOLVED=${GEOMETRY_COLOR_GIT_CONFLICTS_SOLVED:-green}
-GEOMETRY_COLOR_GIT_BRANCH=${GEOMETRY_COLOR_GIT_BRANCH:-242}
+GEOMETRY_COLOR_GIT_DIRTY=${GEOMETRY_COLOR_GIT_DIRTY:-black}
+GEOMETRY_COLOR_GIT_CLEAN=${GEOMETRY_COLOR_GIT_CLEAN:-black}
+GEOMETRY_COLOR_GIT_BARE=${GEOMETRY_COLOR_GIT_BARE:-black}
+GEOMETRY_COLOR_GIT_CONFLICTS_UNSOLVED=${GEOMETRY_COLOR_GIT_CONFLICTS_UNSOLVED:-black}
+GEOMETRY_COLOR_GIT_CONFLICTS_SOLVED=${GEOMETRY_COLOR_GIT_CONFLICTS_SOLVED:-black}
+GEOMETRY_COLOR_GIT_BRANCH=${GEOMETRY_COLOR_GIT_BRANCH:-black}
+GEOMETRY_COLOR_GIT_BRANCH_BG=${GEOMETRY_COLOR_GIT_BRANCH_BG:-green}
 
 # Symbol definitions
-GEOMETRY_SYMBOL_GIT_DIRTY=${GEOMETRY_SYMBOL_GIT_DIRTY:-"⬡"}
-GEOMETRY_SYMBOL_GIT_CLEAN=${GEOMETRY_SYMBOL_GIT_CLEAN:-"⬢"}
-GEOMETRY_SYMBOL_GIT_BARE=${GEOMETRY_SYMBOL_GIT_BARE:-"⬢"}
+GEOMETRY_SYMBOL_GIT_DIRTY=${GEOMETRY_SYMBOL_GIT_DIRTY:-"± "}
+GEOMETRY_SYMBOL_GIT_CLEAN=${GEOMETRY_SYMBOL_GIT_CLEAN:-""}
+GEOMETRY_SYMBOL_GIT_BARE=${GEOMETRY_SYMBOL_GIT_BARE:-""}
 GEOMETRY_SYMBOL_GIT_REBASE=${GEOMETRY_SYMBOL_GIT_REBASE:-"\uE0A0"}
-GEOMETRY_SYMBOL_GIT_UNPULLED=${GEOMETRY_SYMBOL_GIT_UNPULLED:-"⇣"}
-GEOMETRY_SYMBOL_GIT_UNPUSHED=${GEOMETRY_SYMBOL_GIT_UNPUSHED:-"⇡"}
+GEOMETRY_SYMBOL_GIT_UNPULLED=${GEOMETRY_SYMBOL_GIT_UNPULLED:-"▼"}
+GEOMETRY_SYMBOL_GIT_UNPUSHED=${GEOMETRY_SYMBOL_GIT_UNPUSHED:-"▲"}
 GEOMETRY_SYMBOL_GIT_CONFLICTS_SOLVED=${GEOMETRY_SYMBOL_GIT_CONFLICTS_SOLVED:-"◆"}
-GEOMETRY_SYMBOL_GIT_CONFLICTS_UNSOLVED=${GEOMETRY_SYMBOL_GIT_CONFLICTS_UNSOLVED:-"◈"}
+GEOMETRY_SYMBOL_GIT_CONFLICTS_UNSOLVED=${GEOMETRY_SYMBOL_GIT_CONFLICTS_UNSOLVED:-"◆"}
 
 # Combine color and symbols
 GEOMETRY_GIT_DIRTY=$(prompt_geometry_colorize $GEOMETRY_COLOR_GIT_DIRTY $GEOMETRY_SYMBOL_GIT_DIRTY)
@@ -32,7 +33,12 @@ PROMPT_GEOMETRY_GIT_TIME_SHOW_EMPTY=${PROMPT_GEOMETRY_GIT_TIME_SHOW_EMPTY:-true}
 
 # Misc configurations
 GEOMETRY_GIT_NO_COMMITS_MESSAGE=${GEOMETRY_GIT_NO_COMMITS_MESSAGE:-"no commits"}
-GEOMETRY_GIT_SEPARATOR=${GEOMETRY_GIT_SEPARATOR:-"::"}
+GEOMETRY_GIT_SEPARATOR=${GEOMETRY_GIT_SEPARATOR:-""}
+
+SEGMENT_SEPARATOR="\ue0b0"
+PLUSMINUS="\u00b1"
+BRANCH="\ue0a0"
+CROSS="\u2718"
 
 prompt_geometry_git_time_since_commit() {
   # Defaults to "", which would hide the git_time_since_commit block
@@ -101,7 +107,7 @@ prompt_geometry_git_remote_check() {
 prompt_geometry_git_symbol() {
   local render=""
   local git_rebase="$(prompt_geometry_git_rebase_check)"
-  local git_remote="$(prompt_geometry_git_remote_check)"
+  local git_remote="$(prompt_geometry_colorize $GEOMETRY_COLOR_GIT_BRANCH $(prompt_geometry_git_remote_check))"
 
   if [[ -n $git_rebase ]]; then
     render+="$git_rebase"
@@ -168,17 +174,17 @@ geometry_prompt_git_render() {
   if $PROMPT_GEOMETRY_GIT_TIME; then
     local git_time_since_commit=$(prompt_geometry_git_time_since_commit)
     if [[ -n $git_time_since_commit ]]; then
-        time=" $git_time_since_commit $GEOMETRY_GIT_SEPARATOR"
+        time=" $git_time_since_commit"
     fi
   fi
 
-  local render="$(prompt_geometry_git_symbol)"
+  local render="%{$bg[$GEOMETRY_COLOR_GIT_BRANCH_BG]%} $(prompt_geometry_git_symbol)"
 
   if [[ -n $render ]]; then
     render+=" "
   fi
 
-  render+="$(prompt_geometry_git_branch) ${conflicts}${GEOMETRY_GIT_SEPARATOR}${time} $(prompt_geometry_git_status)"
+  render+="$(prompt_geometry_git_branch) $(prompt_geometry_git_status)%{$reset_color%} ${conflicts}${GEOMETRY_GIT_SEPARATOR}${time}"
 
   echo -n $render
 }

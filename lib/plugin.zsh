@@ -80,6 +80,13 @@ geometry_plugin_render() {
   local rprompt=""
   local render=""
 
+  # The right prompt should be on the same line as the first line of the left prompt.
+  # To do so, there is just a quite ugly workaround: Before zsh draws the RPROMPT,
+  # we advise it, to go one line up. At the end of RPROMPT, we advise it to go one
+  # line down. See http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+  RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+  RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+
   for plugin in $_GEOMETRY_PROMPT_PLUGINS; do
     geometry_plugin_check $plugin || continue
 
@@ -90,5 +97,12 @@ geometry_plugin_render() {
     fi
   done
 
-  echo "$rprompt"
+  echo "$RPROMPT_PREFIX$rprompt$RPROMPT_SUFFIX"
+}
+
+# Renders git prompt on left
+gemoetry_plugin_git_render() {
+  local render = $(geometry_prompt_git_render)
+
+  echo "$render"
 }
