@@ -107,18 +107,9 @@ prompt_geometry_git_remote_check() {
 prompt_geometry_git_symbol() {
   local render=""
   local git_rebase="$(prompt_geometry_git_rebase_check)"
-  local git_remote="$(prompt_geometry_colorize $GEOMETRY_COLOR_GIT_BRANCH $(prompt_geometry_git_remote_check))"
 
   if [[ -n $git_rebase ]]; then
     render+="$git_rebase"
-  fi
-
-  if [[ -n $git_rebase && -n $git_remote ]]; then
-    render+=" "
-  fi
-
-  if [[ -n $git_remote ]]; then
-    render+="$git_remote"
   fi
 
   echo -n $render
@@ -184,7 +175,7 @@ geometry_prompt_git_render() {
     render+=""
   fi
 
-  render+="$(prompt_geometry_git_branch) $(prompt_geometry_git_status)%{$reset_color%} ${conflicts}${GEOMETRY_GIT_SEPARATOR}${time}"
+  render+="$(prompt_geometry_git_branch) $(prompt_geometry_git_status)${conflicts}%{$reset_color%}"
 
   echo -n $render
 }
