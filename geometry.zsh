@@ -60,7 +60,7 @@ prompt_geometry_render_rprompt() {
 }
 
 prompt_geometry_render_lprompt() {
-  echo "%{$bg[$GEOMETRY_COLOR_DIR_BG]%}%{$fg[black]%}$GEOMETRY_PROMPT_PREFIX %${#PROMPT_SYMBOL}{%(?.$GEOMETRY_PROMPT.$GEOMETRY_EXIT_VALUE)%} %F{$GEOMETRY_COLOR_DIR}%3~%f %F{$GEOMETRY_COLOR_DIR}↴ $GEOMETRY_PROMPT_SUFFIX\n%{$reset_color%} $ %{$reset_color%}"
+  echo "%{$bg[$GEOMETRY_COLOR_DIR_BG]%}$GEOMETRY_PROMPT_PREFIX %${#PROMPT_SYMBOL}{%(?.$GEOMETRY_PROMPT.$GEOMETRY_EXIT_VALUE)%} %F{$GEOMETRY_COLOR_DIR}%3~%f $(prompt_geometry_colorize $GEOMETRY_COLOR_DIR ↴) $GEOMETRY_PROMPT_SUFFIX\n%{$reset_color%} $ "
 }
 
 prompt_geometry_render() {
@@ -81,7 +81,7 @@ prompt_geometry_render() {
         RPROMPT=""
     else
         setopt localoptions no_prompt_subst
-        RPROMPT="$(prompt_geometry_render_rprompt)%{$reset_color%}"
+        RPROMPT="$(prompt_geometry_render_rprompt)"
     fi
   fi
 }
@@ -108,7 +108,7 @@ prompt_geometry_setup() {
   add-zsh-hook precmd prompt_geometry_render
 
   if $PROMPT_GEOMETRY_SHOW_RPROMPT && $PROMPT_GEOMETRY_RPROMPT_ASYNC; then
-     geometry_async_setup
+    geometry_async_setup
   fi
 }
 

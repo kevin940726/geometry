@@ -99,10 +99,3 @@ geometry_plugin_render() {
 
   echo "$RPROMPT_PREFIX$rprompt$RPROMPT_SUFFIX"
 }
-
-# Renders git prompt on left
-gemoetry_plugin_git_render() {
-  local render = $(geometry_prompt_git_render)
-
-  echo "$render"
-}
